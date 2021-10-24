@@ -5,14 +5,13 @@ import "../css/command.css";
 import { auth } from "../firebase_service/firebase";
 
 function HomePage({ user }) {
-
-    let us=[];
-    let loginmethods = "None"
+    let us = [];
+    let loginmethods = "None";
     let pictureclass = "Default";
 
     const [username, setusername] = useState(user.displayName);
 
-    function callback(mail){
+    function callback(mail) {
         if (/(avatars.githubusercontent.com)/.test(user.photoURL) === true) {
             console.log("[GITHUB]");
             loginmethods = "Github";
@@ -23,40 +22,40 @@ function HomePage({ user }) {
                 .then((response) => response.json())
                 .then(async (data) => {
                     if (data.message) {
-                         console.log("API RATE LIMITS .");
+                        console.log("API RATE LIMITS .");
                     }
 
                     await us.push({ data: data.items[0] });
 
-                     setusername(us[0].data.login);
-                    
+                    setusername(us[0].data.login);
                 })
                 .catch((err) => {
                     console.error(err);
                 });
-        }  
+        }
         if (/(googleusercontent.com)/.test(user.photoURL) === true) {
             console.log("[GOOGLE]");
-            loginmethods="Google";
+            loginmethods = "Google";
         }
 
-        if(/(facebook.com)/.test(user.photoURL) === true){
-            console.log("[FACEBOOK]")
+        if (/(facebook.com)/.test(user.photoURL) === true) {
+            console.log("[FACEBOOK]");
             loginmethods = "Facebook";
             pictureclass = "fb";
         }
-        }
-
-    
+    }
 
     callback(user.email);
-      
 
     return (
         <div>
             <h2>Hi there, {user.displayName}</h2>
             <h3>Your Login With {loginmethods}</h3>
-            <img src={user.photoURL} alt="imggoogle" className={pictureclass}></img>
+            <img
+                src={user.photoURL}
+                alt="imggoogle"
+                className={pictureclass}
+            ></img>
             <div className="TextArea">
                 <span>User : {username}</span>
                 <br></br>
